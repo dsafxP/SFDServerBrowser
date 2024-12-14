@@ -1,5 +1,40 @@
-# Superfighters Deluxe ServerBrowser
+[![Superfighters Deluxe Logo](img/SFD_titleLoop.gif)](https://www.superfightersdeluxe.com)
 
-A server browser for Superfighters Deluxe.
+# Superfighters Deluxe Server Browser
 
-[Superfighters Deluxe](https://mythologicinteractive.com/SuperfightersDeluxe) by [MythoLogic Interactive](https://mythologicinteractive.com/)
+A server browser for *Superfighters Deluxe* that allows you to view available game servers in real-time.
+
+## Requirements
+
+- Python 3.x
+- Tkinter (for GUI)
+- `aiohttp` (for asynchronous HTTP requests)
+- `lxml` (for XML parsing)
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/dsafxP/SFDServerBrowser.git
+   ```
+
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Run the application:
+
+   - **For the GUI version** (graphical interface):
+     ```bash
+     python gui.py
+     ```
+
+     This will open the graphical user interface of the Superfighters Deluxe Server Browser.
+
+   - **For the Console-based version** (command line interface):
+     ```bash
+     python main.py
+     ```
+
+     This will run the Superfighters Deluxe Server Browser in the terminal, displaying server information directly in the console.
