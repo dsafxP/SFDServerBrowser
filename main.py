@@ -1,8 +1,6 @@
-# main.py
 import asyncio
 import os
 from app.fetcher import fetch_game_servers
-from app.xml_parser import parse_servers_from_xml
 
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
@@ -23,15 +21,15 @@ def display_server_details(servers):
             print(f"  Map Name: {server.map_name}")
             print(f"  Players: {server.players}")
             print(f"  Max Players: {server.max_players}")
-            
+
             if server.bots > 0:
                 print(f"  Bots: {server.bots}")
-            
+
             print(f"  Has Password: {server.has_password}")
-            
+
             if server.description:
                 print(f"  Description: {server.description}")
-            
+
             print(f"  Version: {server.version}")
             print(f"  Version Number: {server.version_nr}")
             print(f"  Application Instance: {server.application_instance}")
@@ -40,15 +38,15 @@ def display_server_details(servers):
 def main():
     """Main function to fetch and display servers."""
     print("Fetching game servers...")
-    
+
     # Fetch servers asynchronously
     servers = asyncio.run(fetch_game_servers())
-    
+
     cls()
-    
+
     print("\n--- Game Servers Details ---")
     display_server_details(servers)
-    
+
     # Wait for the user to press any key to continue
     input("\nPress any key to continue...")
 

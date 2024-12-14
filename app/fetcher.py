@@ -17,7 +17,7 @@ async def fetch_game_servers(callback=None):
     url = "https://mythologicinteractive.com/SFDGameServices.asmx"
 
     headers = {
-        "Content-Type": "text/xml; charset=utf-8",
+        "Content-Type": "application/soap+xml; charset=utf-8",
         "SOAPAction": "https://mythologicinteractive.com/Games/SFD/GetGameServers",
     }
 
@@ -27,7 +27,7 @@ async def fetch_game_servers(callback=None):
             if response.status == 200:
                 response_text = await response.text()
                 servers = parse_servers_from_xml(response_text)
-                
+
                 servers = [server for server in servers if server.version_nr != 0]
 
                 if callback:

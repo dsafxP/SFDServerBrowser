@@ -1,6 +1,8 @@
 # app/server.py
 class Server:
-    def __init__(self, address_ipv4, address_ipv6, lip, port, game_name, game_mode, map_name, players, max_players, bots, has_password, description, version, version_nr, application_instance):
+    def __init__(self, address_ipv4, address_ipv6, lip, port, game_name,
+                 game_mode, map_name, players, max_players, bots, has_password,
+                 description, version, version_nr, application_instance):
         self.address_ipv4 = address_ipv4
         self.address_ipv6 = address_ipv6
         self.lip = lip
@@ -19,7 +21,7 @@ class Server:
 
     def __repr__(self):
         return f"Server({self.game_name}, {self.address_ipv4}, {self.port})"
-        
+
     def get_game_mode(self):
         """Returns a human-readable string for the game mode."""
         game_modes = {

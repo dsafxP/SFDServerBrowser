@@ -1,15 +1,14 @@
 import tkinter as tk
-from tkinter import messagebox
-from app.fetcher import fetch_game_servers
 import asyncio
 import threading
+from app.fetcher import fetch_game_servers
 
 class GameServersApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Superfighters Deluxe Game Servers")
         self.root.geometry("600x400")
-        
+
         # Set a custom icon
         self.root.iconbitmap("img/SFDicon.ico")  # Replace with your .ico file path
 
@@ -20,6 +19,8 @@ class GameServersApp:
         # Create a Text widget to display the server details
         self.details_text = tk.Text(self.root, height=8, wrap=tk.WORD)
         self.details_text.pack(fill=tk.X, padx=10, pady=10)  # Fill horizontally, with padding
+
+        self.servers = None
 
         # Set a fetch interval (in milliseconds), e.g., 30,000 ms = 30 seconds
         self.fetch_interval = 30000  # 30 seconds
@@ -80,12 +81,13 @@ class GameServersApp:
     def start_auto_fetch(self):
         """Start a periodic task to fetch game servers automatically."""
         self.fetch_servers()  # Fetch servers immediately
-        self.root.after(self.fetch_interval, self.start_auto_fetch)  # Set the next fetch after the interval
+        self.root.after(self.fetch_interval,
+        self.start_auto_fetch)  # Set the next fetch after the interval
 
 def run_gui():
     """Set up the main Tkinter GUI window and start the application."""
     root = tk.Tk()
-    app = GameServersApp(root)
+    GameServersApp(root)
     root.mainloop()
 
 if __name__ == '__main__':
