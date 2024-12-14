@@ -13,6 +13,16 @@ class GameServersApp:
         # Set a custom icon
         self.root.iconbitmap("img/SFDicon.ico")  # Replace with your .ico file path
 
+        # Create a frame for the search bar
+        self.search_frame = tk.Frame(self.root)
+        self.search_frame.pack(fill=tk.X, padx=10, pady=5)
+
+        # Create a search bar to filter by game name
+        self.search_var = tk.StringVar()
+        self.search_entry = tk.Entry(self.search_frame, textvariable=self.search_var, width=50)
+        self.search_entry.pack(side=tk.LEFT, padx=10)
+        self.search_entry.bind("<KeyRelease>", self.on_search)  # Bind search function to key release event
+
         # Create the Treeview to display server data with sorting capabilities
         self.treeview = ttk.Treeview(self.root, columns=("Game Name", "Game Mode", "Players", "Password", "Version"), show="headings")
         self.treeview.pack(fill=tk.BOTH, expand=True, padx=10, pady=10)
@@ -56,6 +66,11 @@ class GameServersApp:
     def update_server_list(self, servers):
         """Update the Treeview with the server list."""
         self.servers = servers  # Store the server list as an attribute for later use
+        self.filtered_servers = servers  # Initially, no filter is applied
+        self.display_servers(self.filtered_servers)
+
+    def display_servers(self, servers):
+        """Display servers in the Treeview."""
         for item in self.treeview.get_children():
             self.treeview.delete(item)  # Clear the existing entries in the Treeview
 
@@ -106,6 +121,15 @@ class GameServersApp:
                 details_label = tk.Label(self.details_frame, text=server_details, justify=tk.LEFT)
                 details_label.pack(fill=tk.X, padx=10, pady=5)
 
+    def on_search(self, event):
+        """Filter the server list by the search input."""
+        search_term = self.search_var.get().lower()
+        if search_term:
+            self.filtered_servers = [server for server in self.servers if search_term in server.game_name.lower()]
+        else:
+            self.filtered_servers = self.servers  # No filter if search bar is empty
+
+        self.display_servers(self.filtered_servers)
 
     def sort_treeview(self, col):
         """Sort the Treeview by the selected column."""
