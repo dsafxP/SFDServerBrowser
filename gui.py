@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 import asyncio
 import threading
+import sys
+import os
 from app.fetcher import fetch_game_servers
 
 class GameServersApp:
@@ -11,7 +13,7 @@ class GameServersApp:
         self.root.geometry("600x400")
 
         # Set a custom icon
-        self.root.iconbitmap("img/SFDicon.ico")  # Replace with your .ico file path
+        self.root.iconbitmap(resource_path("img/SFDicon.ico"))  # Replace with your .ico file path
 
         # Apply a custom theme
         self.style = ttk.Style()
@@ -171,6 +173,11 @@ class GameServersApp:
         self.fetch_servers()  # Fetch servers immediately
         self.root.after(self.fetch_interval,
                         self.start_auto_fetch) # Set the next fetch after the interval
+
+def resource_path(relative_path):
+    """ Get the absolute path to the resource, works for development and for PyInstaller. """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
 
 def run_gui():
     """Set up the main Tkinter GUI window and start the application."""
