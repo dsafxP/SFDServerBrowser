@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import Menu
 import asyncio
 import threading
 import sys
@@ -81,6 +82,13 @@ class GameServersApp:
 
         self.treeview.insert("", "end", values=("Loading...", "", "", ""))
 
+        self.treeview.bind("<Button-3>", self.show_context_menu)
+
+        # Create a context menu
+        self.context_menu = Menu(self.root, tearoff=0)
+        self.context_menu.add_command(label="Copy IP Address", command=self.copy_ip_address)
+        self.context_menu.add_command(label="Copy Game Info", command=self.copy_game_info)
+
     def fetch_servers(self):
         """Fetch servers in a new thread so the UI doesn't freeze."""
         threading.Thread(target=self.run_fetch_game_servers, daemon=True).start()
@@ -112,7 +120,7 @@ class GameServersApp:
                     server.version
                 ))
 
-    def on_server_select(self, event):
+    def on_server_select(self, _event):
         """Handle left-click on a server in the Treeview."""
         selected_item = self.treeview.selection()
         if selected_item:
@@ -139,7 +147,7 @@ class GameServersApp:
                 details_label = ttk.Label(self.details_frame, text=server_details, justify=tk.LEFT)
                 details_label.pack(fill=tk.X, padx=10, pady=5)
 
-    def on_search(self, event):
+    def on_search(self, _event):
         """Filter the server list by the search input."""
         search_term = self.search_var.get().lower()
         if search_term:
@@ -173,6 +181,44 @@ class GameServersApp:
         self.fetch_servers()  # Fetch servers immediately
         self.root.after(self.fetch_interval,
                         self.start_auto_fetch) # Set the next fetch after the interval
+        
+    def show_context_menu(self, event):
+        """Display the context menu on right-click."""
+        # Identify the clicked item
+        item = self.treeview.identify_row(event.y)
+        if item:
+            self.treeview.selection_set(item)  # Select the item
+            self.context_menu.post(event.x_root, event.y_root)
+
+    def copy_ip_address(self):
+        """Copy the selected server's IP address to the clipboard."""
+        selected_item = self.treeview.selection()
+        if selected_item:
+            for item in selected_item:
+                for server in self.servers:
+                    if server.game_name == self.treeview.item(item)["values"][0]:
+                        self.root.clipboard_clear()
+                        self.root.clipboard_append(server.address_ipv4)
+                        self.root.update()  # Keep the clipboard updated
+                        break
+
+    def copy_game_info(self):
+        """Copy the selected server's game information to the clipboard."""
+        selected_item = self.treeview.selection()
+        if selected_item:
+            for item in selected_item:
+                for server in self.servers:
+                    if server.game_name == self.treeview.item(item)["values"][0]:
+                        game_info = (
+                            f"Game Name: {server.game_name}\n"
+                            f"Game Mode: {server.get_game_mode()}\n"
+                            f"Players: {server.players}/{server.max_players}\n"
+                            f"Version: {server.version}"
+                        )
+                        self.root.clipboard_clear()
+                        self.root.clipboard_append(game_info)
+                        self.root.update()  # Keep the clipboard updated
+                        break
 
 def resource_path(relative_path):
     """ Get the absolute path to the resource, works for development and for PyInstaller. """

@@ -1,6 +1,6 @@
 # app/fetcher.py
 import aiohttp
-from .xml_parser import parse_servers_from_xml
+from app.xml_parser import parse_servers_from_xml
 
 async def fetch_game_servers(callback=None):
     # Define the SOAP request body
