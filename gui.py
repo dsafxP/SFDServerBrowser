@@ -40,6 +40,11 @@ class GameServersApp:
         self.search_entry.insert(0, "Search...")  # Set default text
         self.search_entry.bind("<KeyRelease>", self.on_search)
 
+        # Add Total Players label
+        self.total_players_label = ttk.Label(self.root, text="Total Players: 0",
+                                             font=("Helvetica", 12, "bold"), anchor=tk.W)
+        self.total_players_label.pack(fill=tk.X, padx=20, pady=5)
+
         # Create the Treeview to display server data with sorting capabilities
         self.treeview = ttk.Treeview(self.root, columns=("Game Name", "Game Mode", "Players",
                                                          "Password", "Version"), show="headings",
@@ -102,6 +107,10 @@ class GameServersApp:
         self.servers = servers
         self.filtered_servers = servers  # Initially, no filter is applied
         self.display_servers(self.filtered_servers)
+
+        # Calculate total players
+        total_players = sum(server.players for server in servers)
+        self.total_players_label.config(text=f"Total Players: {total_players}")
 
     def display_servers(self, servers):
         """Display servers in the Treeview."""
@@ -181,7 +190,7 @@ class GameServersApp:
         self.fetch_servers()  # Fetch servers immediately
         self.root.after(self.fetch_interval,
                         self.start_auto_fetch) # Set the next fetch after the interval
-        
+
     def show_context_menu(self, event):
         """Display the context menu on right-click."""
         # Identify the clicked item
