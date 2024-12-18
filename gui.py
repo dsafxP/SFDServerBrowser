@@ -40,6 +40,27 @@ class GameServersApp:
         self.search_entry.insert(0, "Search...")  # Set default text
         self.search_entry.bind("<KeyRelease>", self.on_search)
 
+        # Add Manual Update button beside the search bar
+
+        # Define a style for the Manual Update button
+        self.style.configure("UpdateButton.TButton", foreground="black",
+                             font=("Helvetica", 10, "bold"))
+
+        self.update_button = ttk.Button(self.search_frame,
+            text="Update",
+            style="UpdateButton.TButton",
+            command=self.fetch_servers,
+            width=10)
+
+        self.update_button.pack(side=tk.LEFT, padx=5)
+
+        # Add Auto-Update checkbox beside the buttons
+        self.auto_update_var = tk.BooleanVar(value=True)  # Set initial state to True
+        self.auto_update_checkbox = ttk.Checkbutton(self.search_frame, text="Auto Update",
+                                             variable=self.auto_update_var,
+                                             command=self.toggle_auto_update)
+        self.auto_update_checkbox.pack(side=tk.LEFT, padx=5)
+
         # Add Total Players label
         self.total_players_label = ttk.Label(self.root, text="Total Players: 0",
                                              font=("Helvetica", 12, "bold"), anchor=tk.W)
@@ -78,10 +99,6 @@ class GameServersApp:
         self.servers = None
         self.filtered_servers = FileNotFoundError
 
-        # Set a fetch interval (in milliseconds)
-        self.fetch_interval = 10000  # 10 seconds
-        self.start_auto_fetch()
-
         # Bind left-click on the Treeview to display server details
         self.treeview.bind('<ButtonRelease-1>', self.on_server_select)
 
@@ -94,8 +111,14 @@ class GameServersApp:
         self.context_menu.add_command(label="Copy IP Address", command=self.copy_ip_address)
         self.context_menu.add_command(label="Copy Game Info", command=self.copy_game_info)
 
+        # Set a fetch interval (in milliseconds)
+        self.fetch_interval = 9000  # 9 seconds
+        self.start_auto_fetch()
+
+
     def fetch_servers(self):
         """Fetch servers in a new thread so the UI doesn't freeze."""
+        self.update_button.config(state=tk.DISABLED)  # Disable the button
         threading.Thread(target=self.run_fetch_game_servers, daemon=True).start()
 
     def run_fetch_game_servers(self):
@@ -111,6 +134,8 @@ class GameServersApp:
         # Calculate total players
         total_players = sum(server.players for server in servers)
         self.total_players_label.config(text=f"Total Players: {total_players}")
+
+        self.update_button.config(state=tk.NORMAL)  # Re-enable the button
 
     def display_servers(self, servers):
         """Display servers in the Treeview."""
@@ -186,10 +211,12 @@ class GameServersApp:
             self.treeview.move(item, '', i)
 
     def start_auto_fetch(self):
-        """Start a periodic task to fetch game servers automatically."""
-        self.fetch_servers()  # Fetch servers immediately
-        self.root.after(self.fetch_interval,
-                        self.start_auto_fetch) # Set the next fetch after the interval
+        """Start a periodic task to fetch game servers automatically if enabled."""
+        if self.auto_update_var.get():  # Check if auto-update is enabled
+            self.fetch_servers()  # Fetch servers immediately
+            self.root.after(self.fetch_interval,
+                            self.start_auto_fetch)  # Set the next fetch after the interval
+
 
     def show_context_menu(self, event):
         """Display the context menu on right-click."""
@@ -228,6 +255,11 @@ class GameServersApp:
                         self.root.clipboard_append(game_info)
                         self.root.update()  # Keep the clipboard updated
                         break
+
+    def toggle_auto_update(self):
+        """Toggle the auto-update functionality."""
+        if self.auto_update_var.get():
+            self.start_auto_fetch()  # Restart auto-fetch if enabled
 
 def resource_path(relative_path):
     """ Get the absolute path to the resource, works for development and for PyInstaller. """
