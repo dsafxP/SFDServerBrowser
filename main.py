@@ -45,6 +45,9 @@ def main():
     cls()
 
     print("\n--- Game Servers Details ---")
+    print(f"Total Players: {sum(server.players for server in servers)}")
+    print("-" * 50)
+    
     display_server_details(servers)
 
     # Wait for the user to press any key to continue
