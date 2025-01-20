@@ -4,13 +4,6 @@
 
 A server browser for *Superfighters Deluxe* that allows you to view available game servers in real-time.
 
-## Requirements
-
-- Python 3.x
-- Tkinter (for GUI)
-- `aiohttp` (for asynchronous HTTP requests)
-- `lxml` (for XML parsing)
-
 ## Installation
 
 1. Clone the repository:
