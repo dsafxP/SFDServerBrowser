@@ -112,7 +112,7 @@ class GameServersApp:
         self.context_menu.add_command(label="Copy Game Info", command=self.copy_game_info)
 
         # Set a fetch interval (in milliseconds)
-        self.fetch_interval = 9000  # 9 seconds
+        self.fetch_interval = 12000  # 12 seconds
         self.start_auto_fetch()
 
 
