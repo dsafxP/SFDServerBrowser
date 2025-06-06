@@ -1,4 +1,3 @@
-# app/fetcher.py
 import aiohttp
 from app.xml_parser import parse_servers_from_xml
 
@@ -33,7 +32,9 @@ async def fetch_game_servers(callback=None):
                 if callback:
                     # Call the provided callback function (GUI update)
                     callback(servers)
+                    return None
                 else:
                     return servers
             else:
                 print(f"Request failed with status code: {response.status}")
+                return None

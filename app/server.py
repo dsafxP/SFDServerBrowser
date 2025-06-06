@@ -1,33 +1,53 @@
-# app/server.py
-class Server:
-    def __init__(self, address_ipv4, address_ipv6, lip, port, game_name,
-                 game_mode, map_name, players, max_players, bots, has_password,
-                 description, version, version_nr, application_instance):
-        self.address_ipv4 = address_ipv4
-        self.address_ipv6 = address_ipv6
-        self.lip = lip
-        self.port = port
-        self.game_name = game_name
-        self.game_mode = game_mode
-        self.map_name = map_name
-        self.players = players
-        self.max_players = max_players
-        self.bots = bots
-        self.has_password = has_password
-        self.description = description
-        self.version = version
-        self.version_nr = version_nr
-        self.application_instance = application_instance
+from dataclasses import dataclass
+from typing import Optional
 
-    def __repr__(self):
+
+@dataclass
+class Server:
+    # Network
+    address_ipv4: str
+    port: int
+    address_ipv6: Optional[str] = None
+    lip: Optional[str] = None
+
+    # Game info
+    game_name: str = ""
+    game_mode: int = 0
+    map_name: str = ""
+
+    # Player info
+    players: int = 0
+    max_players: int = 0
+    bots: int = 0
+
+    # Server details
+    has_password: bool = False
+    description: str = ""
+    version: str = ""
+    version_nr: int = 0
+    application_instance: Optional[str] = None
+
+    GAME_MODES = {
+        1: "Versus",
+        2: "Custom",
+        3: "Campaign",
+        4: "Survival"
+    }
+
+    def __str__(self):
         return f"Server({self.game_name}, {self.address_ipv4}, {self.port})"
 
-    def get_game_mode(self):
-        """Returns a human-readable string for the game mode."""
-        game_modes = {
-            1: "Versus",
-            2: "Custom",
-            3: "Campaign",
-            4: "Survival"
-        }
-        return game_modes.get(self.game_mode, "Unknown")
+    @property
+    def game_mode_name(self):
+        """Returns human-readable game mode name."""
+        return self.GAME_MODES.get(self.game_mode, "Unknown")
+
+    @property
+    def is_full(self):
+        """Check if server is at capacity."""
+        return self.players >= self.max_players
+
+    @property
+    def connection_string(self):
+        """Get connection string for the server."""
+        return f"{self.address_ipv4}:{self.port}"

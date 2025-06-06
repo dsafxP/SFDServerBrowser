@@ -13,14 +13,13 @@ def display_server_details(servers):
         for i, server in enumerate(servers, start=1):
             print(f"Server {i}:")
             print(f"  Game Name: {server.game_name}")
-            print(f"  Game Mode: {server.get_game_mode()}")
+            print(f"  Game Mode: {server.game_mode_name}")
             print(f"  IP Address (IPv4): {server.address_ipv4}")
             #print(f"  IP Address (IPv6): {server.address_ipv6}")
             #print(f"  LIP: {server.lip}")
             print(f"  Port: {server.port}")
             print(f"  Map Name: {server.map_name}")
-            print(f"  Players: {server.players}")
-            print(f"  Max Players: {server.max_players}")
+            print(f"  Players: {server.players}/{server.max_players}")
 
             if server.bots > 0:
                 print(f"  Bots: {server.bots}")
