@@ -20,7 +20,7 @@ A server browser for *Superfighters Deluxe* that allows you to view available ga
 
    - **For the GUI version** (graphical interface):
      ```bash
-     python gui.py
+     python gui.pyw
      ```
 
      This will open the graphical user interface of the Superfighters Deluxe Server Browser.
