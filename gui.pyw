@@ -1,7 +1,7 @@
 import flet as ft
 import asyncio
 import threading
-from typing import List, Optional, Dict
+from typing import List, Dict
 from app.fetcher import fetch_game_servers
 from app.server import Server
 
@@ -19,15 +19,15 @@ class GameServersApp:
         self.page = page
         self.servers: List[Server] = []
         self.filtered_servers: List[Server] = []
-        self.selected_server: Optional[Server] = None
+        self.selected_server: Server | None = None
         self.auto_update_enabled = True
         self.fetch_interval = 12  # seconds
         self.sort_reverse: Dict[str, bool] = {}  # Track sort direction for each column
-        self.current_sort_column: Optional[str] = None  # Track current sort column
+        self.current_sort_column: str | None = None  # Track current sort column
 
         # Add shutdown control
         self.shutdown_event = threading.Event()
-        self.auto_update_timer: Optional[threading.Timer] = None
+        self.auto_update_timer: threading.Timer | None = None
 
         # Register cleanup on page close
         self.page.on_window_event = self.on_window_event
@@ -111,6 +111,10 @@ class GameServersApp:
                 ft.DataColumn(
                     ft.Text("Game Mode", weight=ft.FontWeight.BOLD),
                     on_sort=lambda e: self.sort_table("game_mode")
+                ),
+                ft.DataColumn(
+                    ft.Text("Country", weight=ft.FontWeight.BOLD),
+                    on_sort=lambda e: self.sort_table("country_code")
                 ),
                 ft.DataColumn(
                     ft.Text("Players", weight=ft.FontWeight.BOLD),
@@ -311,6 +315,11 @@ class GameServersApp:
                     cells=[
                         ft.DataCell(ft.Text(server.game_name or "Unknown")),
                         ft.DataCell(ft.Text(server.game_mode_name)),
+                        ft.DataCell(ft.Image(
+                            src=f"https://flagcdn.com/w20/{server.country_code.lower()}.png",
+                            width=20,
+                            fit=ft.ImageFit.CONTAIN
+                        )),
                         ft.DataCell(ft.Text(f"{server.players}/{server.max_players}")),
                         ft.DataCell(ft.Text("Yes" if server.has_password else "No")),
                         ft.DataCell(ft.Text(server.version or "Unknown"))
@@ -439,6 +448,8 @@ Map Name: {server.map_name or 'Unknown'}"""
             self.filtered_servers.sort(key=lambda x: x.game_name or "", reverse=reverse)
         elif column == "game_mode":
             self.filtered_servers.sort(key=lambda x: x.game_mode_name, reverse=reverse)
+        elif column == "country_code":
+            self.filtered_servers.sort(key=lambda x: x.country_code, reverse=reverse)
         elif column == "players":
             self.filtered_servers.sort(key=lambda x: x.players, reverse=not reverse)  # Default desc for players
         elif column == "password":
@@ -463,7 +474,8 @@ Map Name: {server.map_name or 'Unknown'}"""
 Game Mode: {server.game_mode_name}
 Players: {server.players}/{server.max_players}
 Version: {server.version or 'Unknown'}
-Address: {server.connection_string}"""
+Address: {server.connection_string}
+Country: {server.country_code}"""
 
             try:
                 self.page.set_clipboard(game_info)
@@ -509,6 +521,16 @@ Address: {server.connection_string}"""
             self.auto_update_timer = threading.Timer(self.fetch_interval, self.start_auto_fetch)
             self.auto_update_timer.daemon = True
             self.auto_update_timer.start()
+
+    @staticmethod
+    def country_code_to_flag(country_code: str) -> str:
+        """Convert country code to flag emoji."""
+        if not country_code or country_code == 'Unknown' or len(country_code) != 2:
+            return "🏳️"  # White flag for unknown
+
+        # Convert country code to flag emoji using regional indicator symbols
+        flag = ''.join(chr(ord(char) + 0x1F1A5) for char in country_code.upper())
+        return flag
 
 
 def run_gui():

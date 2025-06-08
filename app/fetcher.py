@@ -1,5 +1,8 @@
 import aiohttp
+
+from app.server import Server
 from app.xml_parser import parse_servers_from_xml
+
 
 async def fetch_game_servers(callback=None):
     # Define the SOAP request body
@@ -28,6 +31,8 @@ async def fetch_game_servers(callback=None):
                 servers = parse_servers_from_xml(response_text)
 
                 servers = [server for server in servers if server.version_nr != 0]
+                
+                Server.get_country_codes(servers)
 
                 if callback:
                     # Call the provided callback function (GUI update)
