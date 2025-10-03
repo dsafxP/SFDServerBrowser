@@ -1,4 +1,4 @@
-[![Superfighters Deluxe Logo](img/SFD_titleLoop.gif)](https://www.superfightersdeluxe.com)
+[![Superfighters Deluxe Logo](.github/assets/SFD_titleLoop.gif)](https://www.superfightersdeluxe.com)
 
 # Superfighters Deluxe Server Browser [![GitHub License](https://img.shields.io/github/license/dsafxP/SFDServerBrowser)](LICENSE)
 
