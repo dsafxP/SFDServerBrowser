@@ -1,7 +1,7 @@
 import aiohttp
 
-from app.server import Server
-from app.xml_parser import parse_servers_from_xml
+from core.server import Server
+from core.xml_parser import parse_servers_from_xml
 
 
 async def fetch_game_servers(callback=None):

@@ -1,7 +1,7 @@
 import asyncio
 import os
 
-from app.fetcher import fetch_game_servers
+from core.fetcher import fetch_game_servers
 
 
 def cls():

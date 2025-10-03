@@ -2,8 +2,8 @@ import flet as ft
 import asyncio
 import threading
 from typing import List, Dict
-from app.fetcher import fetch_game_servers
-from app.server import Server
+from core.fetcher import fetch_game_servers
+from core.server import Server
 
 
 class GameServersApp:

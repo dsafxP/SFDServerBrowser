@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as Et
 
-from app.server import Server
+from core.server import Server
 
 
 def parse_servers_from_xml(response_text):

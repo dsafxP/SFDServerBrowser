@@ -1,8 +1,7 @@
 import subprocess
 
 # Configuration
-ICON = "img/SFDicon.ico"
-APP_FOLDER = "app"
+APP_FOLDER = "core"
 
 def build_gui():
     """Build gui.pyw with flet pack"""
@@ -12,8 +11,6 @@ def build_gui():
         "flet", 
         "pack", 
         "gui.pyw", 
-        "--icon", 
-        ICON, 
         "--name", 
         "SFDServerBrowser_gui"
     ])
@@ -27,7 +24,6 @@ def build_main():
         "pyinstaller",
         "--onefile",
         "--name=SFDServerBrowser_cli",
-        f"--icon={ICON}",
         f"--add-data={APP_FOLDER}:{APP_FOLDER}",
         "main.py"
     ])
