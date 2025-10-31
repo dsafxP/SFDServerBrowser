@@ -1,6 +1,6 @@
 [![Superfighters Deluxe Logo](.github/assets/SFD_titleLoop.gif)](https://www.superfightersdeluxe.com)
 
-# Superfighters Deluxe Server Browser [![GitHub License](https://img.shields.io/github/license/dsafxP/SFDServerBrowser)](LICENSE)
+# Superfighters Deluxe Server Browser [![GitHub License](https://img.shields.io/github/license/dsafxP/SFDServerBrowser)](LICENSE) [![GitHub Release](https://img.shields.io/github/v/release/dsafxP/SFDServerBrowser)](https://github.com/dsafxP/SFDServerBrowser/releases)
 
 A server browser for *Superfighters Deluxe* that allows you to view available game servers in real-time.
 
