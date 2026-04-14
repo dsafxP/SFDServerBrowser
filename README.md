@@ -2,6 +2,9 @@
 
 # Superfighters Deluxe Server Browser [![GitHub License](https://img.shields.io/github/license/dsafxP/SFDServerBrowser)](LICENSE) [![GitHub Release](https://img.shields.io/github/v/release/dsafxP/SFDServerBrowser)](https://github.com/dsafxP/SFDServerBrowser/releases)
 
+> [!CAUTION]
+> This software has been deprecated with the newer updates for the game that use Steam Networking. It is **obsolete** now and won't be maintained.
+
 A server browser for *Superfighters Deluxe* that allows you to view available game servers in real-time.
 
 ## Installation
